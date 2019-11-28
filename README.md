@@ -9,3 +9,4 @@ concepts
 5. validations
 6. password encryption decryption
 7. mysql storeP
+8. swagger endpoints
