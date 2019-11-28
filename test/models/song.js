@@ -100,6 +100,19 @@ var createSong = (req, res) => {
     );
 };
 
+// Delete a record from tblMedia on basis of artist Id and tblMedia Id
+var deleteMediaArtIdMedId = function (req, res) {
+    const tblMedia_Id = req.body.tblMedia_Id; // get id from body
+    const artistId = req.body.artistId; // get id body
+    db.query('CALL sp_delMediaArtIdMedId(?,?)', [tblMedia_Id, artistId], (err, rows) => {
+        if (!err && rows.affectedRows != 0) {
+            res.status(200).json([{ success: 'Record deleted sucessfully' }])
+        }
+        else
+            res.status(200).json([{ success: 'Fail to delete, ArtistId and tableId should be valid', error: err }]);
+    });
+};
+
 // function used in createUser and createArtist method
 // getting value from request.body and setting in object
 var setSongValue = (req) => {
@@ -197,14 +210,14 @@ var allSongsArtist = (req, res) => {
 /** Code End:: get all songs and artist **/
 
 /** Code Start:: get single songs and artist **/
-var singleSongsArtist = (req, res) => {
+var artistAllAudioSong = (req, res) => {
     const artistId = parseInt(req.body.artistId);
-    db.query("CALL sp_singleSongsArtist(?);", [artistId], function (err, rows) {
+    db.query("CALL sp_artistAllAudioSong(?);", [artistId], function (err, rows) {
         if (err)
-            return res.status(200).json([{ success: 'Fail to get single artist song', error: err }]);
+            return res.status(200).json([{ success: 'Fail to get single artist songs', error: err }]);
         if (rows[0].length == 0)
-            return res.status(200).json([{ success: 'Id doesn`t exists'}]);
-        rows[0][0].success = 'Successfully get single artist song';
+            return res.status(200).json([{ success: 'No data found' }]);
+        rows[0][0].success = 'Successfully get single artist songs';
         //concate api's baseUrl with filename for check in browser
         // setBaseUrlWithEachPath(rows, res);
         return res.status(200).json(rows[0]);        
@@ -228,7 +241,6 @@ var allArtist = (req, res) => {
 };
 /** Code End:: get all songs and artist **/
 
-
 // concate api's baseUrl with filename for check in browser
 // function setBaseUrlWithEachPath(rows, res) {
 //     // this is the fastest way of loop
@@ -241,11 +253,54 @@ var allArtist = (req, res) => {
 //     return res.status(200).json(rows);
 // }
 
+const countMediaArtId = (req,res) => {
+    db.query('CALL sp_CountMediaArtId(?)', [req.body.artistId], (err,rows) => {
+        if (err)
+            return res.status(200).json([{ success: 'Fail to get media', error: err }]);
+        if (rows[0].length == 0)
+            return res.status(200).json([{ success: 'Table is empty' }]);
+        if (rows[0][0].artistId == null)
+            return res.status(200).json([{ success: 'Artist Id does not exists' }]);
+        rows[0][0].success = 'Successfully get media';
+        return res.status(200).json(rows[0]);
+    })
+}
+
+/** Code Start:: get all songs and artist **/
+const allVideosArtist = (req, res) => {
+    db.query('CALL sp_AllVideosArtist()', [], function (err, rows) {
+        if (err)
+            return res.status(200).json([{ success: 'Fail to get all videos with artist name', error: err }]);
+        if (rows[0].length == 0)
+            return res.status(200).json([{ success: 'Table is empty' }]);
+        rows[0][0].success = 'Successfully get all videos with artist name';
+        return res.status(200).json(rows[0]);
+    });
+};
+/** Code End:: get all songs and artist **/
+
+// return all videos of an artist
+const allVideosWithArtistId = (req, res) => {
+    const id = req.body.artistId;
+    db.query("CALL sp_AllVideosWithArtistId(?)", [id], function (err, rows) {
+        if (err)
+            return res.status(200).json([{ success: 'Fail to get single artist videos', error: err }]);
+        if (rows[0].length == 0)
+            return res.status(200).json([{ success: 'No data found'}]);
+        rows[0][0].success = 'Successfully get single artist videos';
+        return res.status(200).json(rows[0]);
+    });
+};
+
 exports.songUploadMulter = songUploadMulter;
 exports.songUpload = songUpload;
 exports.songInsert = songInsert;
+exports.deleteMediaArtIdMedId = deleteMediaArtIdMedId;
 exports.thumbUploadMulter = thumbUploadMulter;
 exports.thumbImageUpload = thumbImageUpload;
 exports.allSongsArtist = allSongsArtist;
-exports.singleSongsArtist = singleSongsArtist;
+exports.artistAllAudioSong = artistAllAudioSong;
 exports.allArtist = allArtist;
+exports.countMediaArtId = countMediaArtId;
+exports.allVideosArtist = allVideosArtist;
+exports.allVideosWithArtistId = allVideosWithArtistId;

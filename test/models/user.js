@@ -14,7 +14,7 @@ var signup = function (req, res) {
   switch (userType) {
     case 1: insertUser(req, res); break;
     case 2: insertUser(req, res); break;
-    case 3: insertArtist(req, res); break;
+    // case 3: insertArtist(req, res); break;
     default: return res.status(200).json([{ success: 'Invalid userType, Fail to signup' }])
   }
   // function for creating user in DB
@@ -49,7 +49,7 @@ var signup = function (req, res) {
 
 function insertUser(req, res){
   //setValue here for insertion
-  const userFields = setUserValue(req);
+  const userFields = setUserValue(req);  
   // Inserting user details in DB 
   db.query('CALL sp_insertUser(?,?,?,?,?,?)',
     [userFields.name, userFields.password, userFields.email, userFields.userName, userFields.phone_no, userFields.type],
@@ -71,28 +71,29 @@ function insertUser(req, res){
   );
 }
 
-function insertArtist(req, res) {
-  //setValue here for insertion
-  const artistFields = setUserValue(req);
-  // Inserting artist details in DB 
-  db.query('CALL sp_insertArtist(?,?,?,?,?,?,?,?,?)',
-    [artistFields.name, artistFields.password, artistFields.email, artistFields.phone_no, artistFields.image,  artistFields.description, artistFields.userName, artistFields.type, artistFields.status],
-    function (err, rows) {
-      if (err) {
-        // Check for dupicate email
-        if (err.code === 'ER_DUP_ENTRY')
-          return res.status(200).json([{ success: 'An account with this email address already exists.' }])
-        else
-          return res.status(200).json([{ success: 'Fail to signup', error: err }])
-      }
-      else if (rows.affectedRows != 0) {
-        // Successfully signup artist, now return user detail
-        retriveUser(artistFields.email, res, 'signup')
-      } else
-        return res.status(200).json([{ success: 'Fail to signup', error: err }])
-    }
-  );
-}
+// function insertArtist(req, res) {
+//   //setValue here for insertion
+//   const artistFields = setUserValue(req);
+//   // Inserting artist details in DB 
+//   db.query('CALL sp_insertArtist(?,?,?,?,?,?,?,?,?)',
+//     [artistFields.name, artistFields.password, artistFields.email, artistFields.phone_no, artistFields.image,  artistFields.description, artistFields.userName, artistFields.type, artistFields.status],
+//     function (err, rows) {
+//       if (err) {
+//         // Check for dupicate email
+//         if (err.code === 'ER_DUP_ENTRY')
+//           return res.status(200).json([{ success: 'An account with this email address already exists.' }])
+//         else
+//           return res.status(200).json([{ success: 'Fail to signup', error: err }])
+//       }
+//       else if (rows.affectedRows != 0) {
+//         fileCopy(req);
+//         // Successfully signup artist, now return user detail
+//         retriveUser(artistFields.email, res, 'signup')
+//       } else
+//         return res.status(200).json([{ success: 'Fail to signup', error: err }])
+//     }
+//   );
+// }
 
 
 // function used in createUser and createArtist method
@@ -105,7 +106,7 @@ var setUserValue = (req) => {
     phone_no: req.body.phone_no,
     image: req.body.image,
     type: parseInt(req.body.type),
-    status: req.body.status,
+    status: parseInt(req.body.status),
     description: req.body.description,
     userName: req.body.email
   };
@@ -162,8 +163,8 @@ function retriveUser(email, res, checkApi) {
       return res.status(200).json([{ success: 'Email not registered' }])
       
     //adding success element in rows object 
-    if (rows[0][0].UserType == 2 && checkApi == 'signup')
-        rows[0][0].success = "Successfully registerd";
+    if ((rows[0][0].UserType == 2 || rows[0][0].UserType == 1) && checkApi == 'signup')
+        rows[0][0].success = "Successfully registred";
     else if (rows[0][0].UserType == 3 && checkApi == 'signup')      
       rows[0][0].success = "Please wait for admin to approve. We will contact you shortly"; 
     else if (checkApi == 'forgetPassword')
@@ -204,7 +205,7 @@ var forgetPassword = (req, res) => {
 var allUsers = (req, res) => {
   db.query('CALL sp_AllUsers()', [], function (err, rows) {
     if (err)
-      return res.status(200).json([{ success: 'Fail to get all users', error:err }]);
+      return res.status(400).json([{ success: 'Fail to get all users', error:err }]);
     if (rows.length == 0)
       return res.status(200).json([{ success: 'Table is empty'}]);
     rows[0][0].success = 'Successfully get all users';
@@ -227,19 +228,6 @@ var singleUser = (req, res) => {
       rows[0][0].Password = cryptr.decrypt(rows[0][0].Password);
     rows[0][0].success = 'Successfully get single user';
     return res.status(200).json(rows[0])
-  });
-};
-
-// Delete a record from tblMedia on basis of artist Id and tblMedia Id
-var deleteMediaArtIdMedId = function (req, res) {
-  const tblMedia_Id = req.body.tblMedia_Id; // get id from url
-  const artistId = req.body.artistId; // get id from url
-  db.query('CALL sp_delMediaArtIdMedId(?,?)', [tblMedia_Id, artistId], (err, rows) =>{
-    if(!err && rows.affectedRows != 0){
-      res.status(200).json([{ success: 'Record deleted sucessfully'}])
-    }
-    else
-      res.status(200).json([{ success: 'Fail to delete, ArtistId and tableId should be valid', error: err }]);
   });
 };
 
@@ -372,7 +360,29 @@ function updateArtist(req, res) {
 }
 /** Code End:: update user and artist */
 
+// delete profile with id 
+const deleteProfile = (req,res) =>{
+  db.query('CALL sp_DeleteProfile(?)', [req.body.id], (err, rows)=>{
+    if(err)
+      return res.status(200).json([{ success: 'May be some connection error ', error: err }])
+    else if (rows.affectedRows != 0)
+      return res.status(200).json([{ success: 'Record Deleted Successfully ' }])
+    else
+      return res.status(200).json([{ success: 'Fail to delete record, Id should be valid' }])
+  });
+}
 
+// get all user having type 2
+const allUserType2 = (req,res) =>{
+  db.query('CALL sp_AllUsersType2()', [], function (err, rows) {
+    if (err)
+      return res.status(200).json([{ success: 'Fail to get all users type 2', error: err }]);
+    if (rows.length == 0)
+      return res.status(200).json([{ success: 'Table is empty' }]);
+    rows[0][0].success = 'Successfully get all users';
+    return res.status(200).json(rows[0]);
+  });
+}
 
 // var sendEmail = async (data) =>{
 //   // create reusable transporter object using the default SMTP transport
@@ -417,7 +427,8 @@ exports.imageUpload = imageUpload;
 exports.uploadMulter = uploadMulter;
 exports.artist = artist;
 exports.editProfile = editProfile;
-exports.deleteMediaArtIdMedId = deleteMediaArtIdMedId;
+exports.deleteProfile = deleteProfile;
+exports.allUserType2 = allUserType2;
 
 
 

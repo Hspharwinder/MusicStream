@@ -29,7 +29,7 @@ var signUp = async (req, res, next) => {
 // MiddleWare validation for login
 var login = async (req, res, next) => {
     let v = new Validator(req.body, {
-            userName: 'required|email',
+            userName: 'required',
             password: 'required'
         });
     const matched = await v.check();
@@ -164,12 +164,80 @@ var deleteMediaArtIdMedId = async (req,res, next)=>{
         next();
 }
 
-exports.signUp = signUp;
-exports.login = login;
-exports.forgetPassword = forgetPassword;
-exports.singleUser = singleUser;
-exports.artist = artist;
-exports.editProfile = editProfile;
-exports.song = song;
-exports.artistId = artistId;
-exports.deleteMediaArtIdMedId = deleteMediaArtIdMedId;
+// MiddleWare validation for profile id
+var deleteProfile = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        id: 'required',
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+};
+
+// valdation for id and status field
+const IdStatus = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        id:'required',
+        status:'required'
+    });
+    const matched = await v.check();
+    if(!matched) {
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+
+// Start :: validtion for wishlist
+// validation for userId, mediaId to insert record in table wishlist 
+const userIdMediaId = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        userId:'required',
+        mediaId:'required'
+    });
+    const matched = await v.check();
+    if(!matched){
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    }else{
+        next();
+    }
+}
+
+// validation for userId to get record from table wishlist 
+const userId = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        userId: 'required',
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+// End :: validtion for wishlist
+
+exports.signUp                      = signUp;
+exports.login                       = login;
+exports.forgetPassword              = forgetPassword;
+exports.singleUser                  = singleUser;
+exports.artist                      = artist;
+exports.editProfile                 = editProfile;
+exports.song                        = song;
+exports.artistId                    = artistId;
+exports.deleteMediaArtIdMedId       = deleteMediaArtIdMedId;
+exports.deleteProfile               = deleteProfile;
+exports.IdStatus                    = IdStatus;
+exports.userIdMediaId               = userIdMediaId;
+exports.userId                      = userId;
