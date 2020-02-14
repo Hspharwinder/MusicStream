@@ -2,11 +2,11 @@
 module.exports = {
   'connection': {
     'host': '212.71.250.201',
-    'user': 'a572016d_ShyamMusicUser',
-    'password': 'shyam@123',
+    'user': 'username',
+    'password': '*****',
     'multipleStatements': 'true'
   },
-  'database': 'a572016d_ShyamMusicStreaming'
+  'database': 'databaseName'
 };
 
 
