@@ -17,16 +17,12 @@
             "description": "Operations about create user/artist, login, forget password",
             "externalDocs": {
                 "description": "Find out more about MusicStream",
-                "url": "http://testchef.bytecodetechnologies.co.in"
+                "url": "http://185.149.112.29:3000/swagger/"
             }
         },
         {
             "name": "User",
-            "description": "Operations about get user/artist, edit, delete",
-            "externalDocs": {
-                "description": "Find out more",
-                "url": "http://testchef.bytecodetechnologies.co.in"
-            }
+            "description": "Operations about get user/artist, edit, delete"
         },
         {
             "name": "Song",
@@ -39,6 +35,18 @@
         {
             "name": "Wishlist",
             "description": "Operations about wishlist"
+        },
+        {
+            "name": "Liking",
+            "description": "Operations about like-dislike"
+        },
+        {
+            "name": "Comments",
+            "description": "Operations about comments"
+        },
+        {
+            "name": "Booking",
+            "description": "Operations about booking"
         }
        
     ],
@@ -102,17 +110,70 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Created user object",
+                        "in": "formData",
+                        "name": "name",
+                        "description": "",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/User"
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "userName",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "description": "type-2 for user",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "enum": [2],
+                            "default": 2
+                        }                       
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "description": "Status 1(acitve/approved), Status 2(in-active/not approved)",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                2
+                            ],
+                            "default": 2
                         }
-                    }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "phone_no",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }         
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Successfully created user, responsed json Array",
                         "schema": {
                             "$ref": "#/definitions/User"
@@ -141,13 +202,18 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Login object",
+                        "in": "formData",
+                        "name": "userName",
+                        "description": "UserName",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Login"
-                        }
+                        "type":"string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "Password",
+                        "required": true,
+                        "type":"string"
                     }
                 ],
                 "responses": {
@@ -177,19 +243,11 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Created user object",
+                        "in": "formData",
+                        "name": "email",
+                        "description": "",
                         "required": true,
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "email": {
-                                    "type": "string",
-                                    "required": true
-                                }
-                            }                            
-                        }
+                        "type": "string"                        
                     }
                 ],
                 "responses": {
@@ -219,17 +277,65 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Created artist object",
+                        "in": "formData",
+                        "name": "name",
+                        "description": "",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/User"
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "description": "Type-3 for artist",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                3
+                            ],
+                            "default": 3
                         }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "description": "Status 1(acitve/approved), Status 2(in-active/not approved)",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                2
+                            ],
+                            "default": 2
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "phone_no",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
-                    "201": {       
+                    "200": {       
                         "description": "Successfully created artist, responsed json Array",                     
                         "schema": {
                             "$ref": "#/definitions/Artist"
@@ -243,7 +349,243 @@
                     }
                 }
             }
-        },      
+        }, 
+        "/editProfilebyAdmin": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Update user profile by admin",
+                "description": "Edit user profile by admin",
+                "operationId": "editProfilebyAdmin",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "name",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },                           
+                    {
+                        "in": "formData",
+                        "name": "phone_no",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "userName",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully update record, responsed json Array"
+                    },
+                    "400": {
+                        "description": "Fail to update record, responsed json Array"
+                    }
+                }
+            }
+        },     
+        "/loginWithOtpInsert": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Insert login With Otp values",
+                "description": "",
+                "operationId": "loginWithOtpInsert",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "phone_no",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "description": "2- for user, 3- for artist",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                2,
+                                3
+                            ],
+                            "default": 2
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "description": "1- apprvoed, 2- not approved",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                2
+                            ],
+                            "default": 2
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully created user, responsed json Array",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to create user"
+                    },
+                    "409": {
+                        "description": "Duplicate entry"
+                    }
+                }
+            }
+        },
+        "/loginWithSocialMediaAccount": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login with social media account",
+                "description": "Insert into db login detail if not exists",
+                "operationId": "loginWithSocialMediaAccount",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "name",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "image",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "description": "2- for user, 3- for artist",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                2,
+                                3
+                            ],
+                            "default": 2
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "description": "1- apprvoed, 2- not approved",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                2
+                            ],
+                            "default": 2
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "userName",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
+                    }                    
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully created user, responsed json Array",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to create user"
+                    },
+                    "409": {
+                        "description": "Duplicate entry"
+                    }
+                }
+            }
+        },
+        
         
         "/user": {
             "get": {
@@ -284,10 +626,11 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "pass record Id",
+                        "in": "formData",
+                        "name": "id",
+                        "description": "Profile id",
                         "required": true,
+                        "type":"integer",
                         "schema": {
                             "properties":{
                                 "id": {
@@ -323,15 +666,86 @@
                     "application/json",
                     "application/xml"
                 ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "pass record Id and other detail for updation",
+               "parameters": [
+                   {
+                        "in": "formData",
+                        "name": "id",
+                        "description": "",
                         "required": true,
-                        "schema": {
-                            "$ref":"#/definitions/User"
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "name",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "description": "2- for user, 3- for artist",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [2,3],
+                            "default": 2
                         }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "image",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "description": "1- apprvoed, 2- not approved",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [1,2],
+                            "default": 2
+                        }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "phone_no",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "userName",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -361,19 +775,11 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Pass id",
+                        "in": "formData",
+                        "name": "id",
+                        "description": "Profile id",
                         "required": true,
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "integer",
-                                    "required": true
-                                }
-                            }
-                        }
+                        "type": "integer"                        
                     }
                 ],
                 "responses": {
@@ -385,7 +791,39 @@
                     }
                 }
             }
-        },        
+        },  
+        "/delProfileArtist": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete artist record, based on Id",
+                "description": "",
+                "operationId": "delProfileArtist",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "id",
+                        "description": "Profile id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Succesfully removed record"
+                    },
+                    "400": {
+                        "description": "Fail to delete record"
+                    }
+                }
+            }
+        },
+        
         "/allUserType2": {
             "get": {
                 "tags": [
@@ -407,6 +845,196 @@
                     },
                     "400": {
                         "description": "Fail to retreive record"
+                    }
+                }
+            }
+        },
+        "/insertCheckValue": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Add check value",
+                "description": "",
+                "operationId": "insertCheckValue",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "id",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "checkValue",
+                        "description": "check value 0/1",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Inserted"
+                    },
+                    "400": {
+                        "description": "Not inserted"
+                    }
+                }
+            }
+        },
+        "/insertArtistLike": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "If user and artist exist in Liking then update like value else insert like value",
+                "description": "",
+                "operationId": "insertArtistLike",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "userId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "like",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Yes/No"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/fetchLikesOfParticularUser": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Fetch like dislike based on userId and artist id",
+                "description": "",
+                "operationId": "fetchLikesOfParticularUser",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "userId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "0/1  (0-dislike, 1-like)"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/artistLikingAdminIncrement": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Add artifical likes by admin for particular artist",
+                "description": "",
+                "operationId": "artistLikingAdminIncrement",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "incrementValue",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Inserted"
+                    },
+                    "400": {
+                        "description": "Not inserted"
+                    }
+                }
+            }
+        },
+        "/fetchTotalLikesOfArtist": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Fetch total likes based on artist id",
+                "description": "",
+                "operationId": "fetchTotalLikessOfArtist",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fetch Total no of likes"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 }
             }
@@ -452,7 +1080,7 @@
                     }
                 }
             }
-        },
+        },      
         "/songsThumbImagePost": {
             "post": {
                 "tags": [
@@ -508,17 +1136,51 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "insert song object",
+                        "in": "formData",
+                        "name": "name",
+                        "description": "",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Song"
+                        "type":"string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "type",
+                        "description": "1 audio song, 2 video song",
+                        "required":true,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                1,
+                                2
+                            ],
+                            "default": 1
                         }
+                    },
+                    {
+                        "in": "formData",
+                        "name": "filePath",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "thumbnailPath",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Successfully inserted record, responsed json Array",
                         "schema": {
                             "$ref": "#/definitions/Song"
@@ -543,24 +1205,19 @@
                     "application/xml"
                 ],
                 "parameters": [
+                    { 
+                        "in": "formData",
+                        "name": "tblMedia_Id",
+                        "description": "Pass MediaId",                              
+                        "type": "integer",
+                        "required": true
+                    },
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Pass MediaId, ArtistId",
-                        "required": true,
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "tblMedia_Id": {
-                                    "type": "integer",
-                                    "required": true
-                                },
-                                "artistId": {
-                                    "type": "integer",
-                                    "required": true
-                                }
-                            }
-                        }
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "Pass  ArtistId",
+                        "type": "integer",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -579,7 +1236,7 @@
                     "Song"
                 ],
                 "summary": "Get all audio song",
-                "description": "Return all audio songs with artist Name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ",
+                "description": "Return all audio songs with artist Name",
                 "operationId": "getAllAudioSong",
                 "produces": [
                     "application/json",
@@ -604,7 +1261,7 @@
                     "Song"
                 ],
                 "summary": "Get all video song",
-                "description": "Return all video songs with artist Name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ",
+                "description": "Return all video songs with artist Name",
                 "operationId": "getAllVideoSong",
                 "produces": [
                     "application/json",
@@ -629,7 +1286,7 @@
                     "Song"
                 ],
                 "summary": "Get all audio song, passing artist id",
-                "description": "Return all audio songs with artist name by passing artist id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ",
+                "description": "Return all audio songs with artist name by passing artist id",
                 "operationId": "getSingleSong",
                 "produces": [
                     "application/json",
@@ -637,18 +1294,11 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Pass artist id",
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
                         "required": true,
-                        "schema": {
-                           "properties":{
-                               "artistId":{
-                                   "type":"integer",
-                                   "required":true
-                               }
-                           }
-                        }
+                        "type": "integer"                        
                     }
                 ],
                 "responses": {
@@ -670,26 +1320,19 @@
                     "Song"
                 ],
                 "summary": "Get all video song, pass artist id",
-                "description": "Return all video songs with artist name by passing artist id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ",
-                "operationId": "getSingleSong",
+                "description": "Return all video songs with artist name by passing artist id",
+                "operationId": "allVideosWithArtistId",
                 "produces": [
                     "application/json",
                     "application/xml"
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
+                        "in": "formData",
+                        "name": "artistId",
                         "description": "Pass artist id",
                         "required": true,
-                        "schema": {
-                            "properties": {
-                                "artistId": {
-                                    "type": "integer",
-                                    "required": true
-                                }
-                            }
-                        }
+                        "type": "integer"                        
                     }
                 ],
                 "responses": {
@@ -711,7 +1354,7 @@
                     "Song"
                 ],
                 "summary": "Get all artist with thier number of songs ",
-                "description": "Return all artist with thier number of songs                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ",
+                "description": "Return all artist with thier number of songs",
                 "operationId": "allArtist",
                 "produces": [
                     "application/json",
@@ -743,19 +1386,12 @@
                     "application/xml"
                 ],
                 "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
+                   {
+                        "in": "formData",
+                        "name": "artistId",
                         "description": "Pass artist id",
                         "required": true,
-                        "schema": {
-                            "properties": {
-                                "artistId": {
-                                    "type": "integer",
-                                    "required": true
-                                }
-                            }
-                        }
+                        "type": "integer"
                     }
                 ],
                 "responses": {
@@ -764,6 +1400,28 @@
                         "schema": {
                             "$ref": "#/definitions/Song"
                         }
+                    },
+                    "400": {
+                        "description": "Fail to retreive record"
+                    }
+                }
+            }
+        },
+        "/noOfAudioNoOfVideo": {
+            "get": {
+                "tags": [
+                    "Song"
+                ],
+                "summary": "Get count audio and videos",
+                "description": "",
+                "operationId": "noOfAudioNoOfVideo",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success, noOfAudio and noOfVideo"
                     },
                     "400": {
                         "description": "Fail to retreive record"
@@ -836,26 +1494,25 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Approve artist object",
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "Artist id",
                         "required": true,
-                        "schema": {                            
-                            "properties": {
-                                "artistId": {
-                                    "type": "integer",
-                                    "required": true
-                                },
-                                "userName": {
-                                    "type": "string",
-                                    "required": true
-                                },
-                                "password": {
-                                    "type": "string",
-                                    "required": true
-                                }
-                            }
-                        }
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "userName",
+                        "description": "User name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "Password",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -885,26 +1542,25 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "change status object",
+                        "in": "formData",
+                        "name": "id",
+                        "description": "",
                         "required": true,
-                        "schema": {
-                            "properties": {
-                                "id": {
-                                    "type": "integer",
-                                    "required": true
-                                },
-                                "userName": {
-                                    "type": "string",
-                                    "required": true
-                                },
-                                "status": {
-                                    "type": "integer",
-                                    "required": true
-                                }
-                            }
-                        }
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "userName",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "status",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
@@ -935,13 +1591,19 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "wishlist object",
+                        "in": "formData",
+                        "name": "userId",
+                        "description": "",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/WishList"
-                        }
+                        "type":"integer"
+                        
+                    },
+                    {
+                        "in": "formData",
+                        "name": "mediaId",
+                        "description": "",
+                        "required": true,
+                        "type":"integer"
                     }
                 ],
                 "responses": {
@@ -968,18 +1630,11 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
+                        "in": "formData",
+                        "name": "userId",
                         "description": "pass user id",
                         "required": true,
-                        "schema": {
-                            "properties": {
-                                "userId": {
-                                    "type": "integer",
-                                    "required": true
-                                }
-                            }
-                        }
+                        "type": "integer"
                     }
                 ],
                 "responses": {
@@ -1006,13 +1661,18 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "wihslist object",
+                        "in": "formData",
+                        "name": "userId",
+                        "description": "",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/WishList"
-                        }
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "mediaId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
@@ -1039,13 +1699,18 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "wishlist object",
+                        "in": "formData",
+                        "name": "userId",
+                        "description": "",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/WishList"
-                        }
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "mediaId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
@@ -1057,8 +1722,486 @@
                     }
                 }
             }
-        }
+        },
         
+        "/likeDislike": {
+            "post": {
+                "tags": [
+                    "Liking"
+                ],
+                "summary": "If user and media exist in Liking then update like value else insert like value",
+                "description": "",
+                "operationId": "likeDislike",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "userId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "mediaId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "like",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Yes/No"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/fetchLikeDislike": {
+            "post": {
+                "tags": [
+                    "Liking"
+                ],
+                "summary": "Fetch like dislike based on userId and media id",
+                "description": "",
+                "operationId": "fetchlikeDislike",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "userId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "mediaId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "0/1  (0-dislike, 1-like)"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+
+        "/addComment": {
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "If user and media exist in comment then update comment value else insert commnet value",
+                "description": "",
+                "operationId": "addComments",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "userId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "mediaId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "comment",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Inserted /Not Inserted"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/fetchComment": {
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Fetch comment based on media id",
+                "description": "",
+                "operationId": "fetchComment",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "mediaId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "0/1  (0-dislike, 1-like)"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/countLikeCommentByMedidId": {
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Fetch count of comment and likes based on media id",
+                "description": "",
+                "operationId": "countLikeCommentByMedidId",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "mediaId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "number of likes and comments"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+
+        "/insertBooking": {
+            "post": {
+                "tags": [
+                    "Booking"
+                ],
+                "summary": "User can book artist for programs",
+                "description": "",
+                "operationId": "addBooking",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "place",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "",                        
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "date",
+                        "description": "yyyy/mm/dd",
+                        "required": true,
+                        "type": "string",
+                        "format": "date" 
+                    },
+                    {
+                        "in": "formData",
+                        "name": "time",
+                        "description": "hh:mm:ss",
+                        "required": true,
+                        "type": "string",
+                        "format": "time"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Inserted /Not Inserted"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },        
+        "/fetchBooking": {
+            "post": {
+                "tags": [
+                    "Booking"
+                ],
+                "summary": "Return all record from booking, pass artistId",
+                "description": "",
+                "operationId": "getBooking",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return json array of object"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/fetchAllBooking": {
+            "post": {
+                "tags": [
+                    "Booking"
+                ],
+                "summary": "Return detail of booking and artist ",
+                "description": "",
+                "operationId": "getAllBooking",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return json array of object"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/deleteBooking":{
+            "post": {
+                "tags": [
+                    "Booking"
+                ],
+                "summary": "Removing booking by artist",
+                "description": "",
+                "operationId": "removeBooking",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "bookingId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Booking removed/ not removed"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/editBooking": {
+            "post": {
+                "tags": [
+                    "Booking"
+                ],
+                "summary": "Edit booking details",
+                "description": "",
+                "operationId": "editBooking",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "bookingId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "artistId",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "place",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "",
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "date",
+                        "description": "yyyy/mm/dd",
+                        "required": true,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "time",
+                        "description": "hh:mm:ss",
+                        "required": true,
+                        "type": "string",
+                        "format": "time"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated /Not updated"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/bookNowEvent": {
+            "post": {
+                "tags": [
+                    "Booking"
+                ],
+                "summary": "Send email",
+                "description": "",
+                "operationId": "bookNowEvent",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+               "parameters": [    
+                   {
+                    "in": "formData",
+                    "name": "userId",
+                    "description": "",
+                    "required": true,
+                    "type": "integer"
+                },            
+                {
+                    "in": "formData",
+                    "name": "artistId",
+                    "description": "",
+                    "required": true,
+                    "type": "integer"
+                },
+                {
+                    "in": "formData",
+                    "name": "eventId",
+                    "description": "",
+                    "required": true,
+                    "type": "integer"
+                },
+                {
+                    "in": "formData",
+                    "name": "name",
+                    "description": "",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "in": "formData",
+                    "name": "email",
+                    "description": "",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "in": "formData",
+                    "name": "description",
+                    "description": "",
+                    "required": true,
+                    "type": "string"
+                }
+                
+                
+            ],
+                "responses": {
+                    "200": {
+                        "description": "1- sucess/0- fail"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
     },
     "securityDefinitions": {
         "petstore_auth": {
@@ -1122,6 +2265,7 @@
         },
         "Login": {
             "type": "object",
+            "in":"formData",
             "properties": {
                 "userName": {
                     "type": "string",
@@ -1211,6 +2355,78 @@
             },
             "xml": {
                 "name": "WishList"
+            }
+        },
+        "InsertLiking":{
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "type": "integer",
+                    "required": true
+                },
+                "mediaId": {
+                    "type": "integer",
+                    "required": true
+                },
+                "like": {
+                    "type": "integer",
+                    "required": true
+                }
+            },
+            "xml": {
+                "name": "Insert Liking"
+            }
+        },
+        "FetchLiking": {
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "type": "integer",
+                    "required": true
+                },
+                "mediaId": {
+                    "type": "integer",
+                    "required": true
+                }
+            },
+            "xml": {
+                "name": "Fetch Liking"
+            }
+        },
+        "InsertComment": {
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "type": "integer",
+                    "required": true
+                },
+                "mediaId": {
+                    "type": "integer",
+                    "required": true
+                },
+                "comment": {
+                    "type": "string",
+                    "required": true
+                }
+            },
+            "xml": {
+                "name": "Add Comment"
+            }
+        },
+        "FetchComment": {
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "type": "integer",
+                    "required": true
+                },
+                "mediaId": {
+                    "type": "integer",
+                    "required": true
+                }
+            },
+            "xml": {
+                "name": "Insert Comment"
             }
         },
         "ApiResponse": {

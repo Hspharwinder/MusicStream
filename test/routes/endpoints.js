@@ -1,9 +1,12 @@
 // var auth = require('../utils/auth');
-const user = require('../models/user');
-const song = require('../models/song');
-const approval = require('../models/approval');
-const wishList = require('../models/wishlist');
+const user = require('../controller/user');
+const song = require('../controller/song');
+const approval = require('../controller/approval');
+const wishList = require('../controller/wishlist');
 const validation = require('../middleware/allValidations/validations');
+const like = require('../controller/like');
+const comment = require('../controller/comment');
+const booking = require('../controller/booking');
 // const authcheck = require('../middleware/authcheck');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
@@ -20,13 +23,22 @@ module.exports = function(app) {
   app.post('/login', validation.login, user.login);
   app.post('/forgetPassword', validation.forgetPassword, user.forgetPassword);
   app.post('/createartist', validation.artist, user.artist); 
-
+  app.post('/editProfilebyAdmin', validation.editProfilebyAdmin, user.editProfilebyAdmin);
+  app.post('/artistLikingAdminIncrement', validation.artistLikingAdminIncrement, user.artistLikingAdminIncrement);
+  app.post('/loginWithOtpInsert', validation.loginWithOtpInsert, user.loginWithOtpInsert);   
+  app.post('/loginWithSocialMediaAccount', validation.email, user.loginWithSocialMediaAccount); 
+ 
   // user Apis
   app.get('/user', user.allUsers);
   app.post('/profile', validation.singleUser, user.singleUser);
   app.post('/editProfile', validation.editProfile, user.editProfile);
   app.post('/delProfile', validation.deleteProfile, user.deleteProfile);
+  app.post('/delProfileArtist', validation.deleteProfile, user.delProfileArtist);
   app.get('/allUserType2', user.allUserType2);  // get all user having type 2 (mean not artist/admin only user)
+  app.post('/insertCheckValue', validation.insertCheckValue, user.insertCheckValue);
+  app.post('/insertArtistLike', validation.insertArtistLike, user.insertArtistLike);
+  app.post('/fetchLikesOfParticularUser', validation.userIdArtitstId, user.fetchLikesOfParticularUser);
+  app.post('/fetchTotalLikesOfArtist', validation.artistId, user.fetchTotalLikesOfArtist);
 
   // Song Apis 
   app.post('/songsPost', song.songUploadMulter.single('song'), song.songUpload);
@@ -37,8 +49,9 @@ module.exports = function(app) {
   app.get('/allVideosArtist', song.allVideosArtist);  // return all artists and Videos
   app.post('/singleSongsArtist', validation.artistId, song.artistAllAudioSong); // get All mp3 song with artist ID
   app.post('/allVideosWithArtistId', validation.artistId, song.allVideosWithArtistId); // get All videos with artist ID
-  app.get('/allArtist', song.allArtist); // return all artist with there No of Song
+  app.get('/allArtist', song.allArtist); // return all artist with there No of Song and also no of videos
   app.post('/countMediaArtId', validation.artistId, song.countMediaArtId); // return counting of videos and song based on artist Id
+  app.get('/noOfAudioNoOfVideo', song.noOfAudioNoOfVideo);
   
   // Approval api
   app.get('/allApprovedArtist', approval.allApprovedArtist); // return all aproved artist (usertype 3)
@@ -51,6 +64,23 @@ module.exports = function(app) {
   app.post('/GetWishListByUserId', validation.userId, wishList.getWishListMediaByUserId);  // return all record of wishlist, media with artist name(tbluser) based on userId 
   app.post('/delWishListByUserIdMediaId', validation.userIdMediaId, wishList.deleteWishListByUserIdMediaId);   // remove record from wishlist
   app.post('/checkwishlist', validation.userIdMediaId, wishList.checkwishlist );  // check whether record present in wishlist or not based on user id and media id
+
+  // Liking api
+  app.post('/likeDislike', validation.userIdMediaId, like.addLikeDislike); 
+  app.post('/fetchLikeDislike', validation.userIdMediaId, like.fetchLikeDislike); 
+
+  // comment api
+  app.post('/addComment', validation.userIdMediaId, comment.addComment); 
+  app.post('/fetchComment', validation.mediaId, comment.fetchComment);
+  app.post('/countLikeCommentByMedidId', validation.mediaId, comment.countLikeCommentByMedidId);
+
+  // Booking api
+  app.post('/insertBooking', validation.booking, booking.insertBooking);
+  app.post('/fetchBooking', validation.artistId, booking.fetchBooking);
+  app.post('/fetchAllBooking', booking.fetchAllBooking); // get detail of booking and artist
+  app.post('/deleteBooking', booking.deleteBooking);
+  app.post('/editBooking', validation.bookingId, validation.booking, booking.editBooking); 
+  app.post('/bookNowEvent',booking.bookNowEvent); 
 };
 
 
@@ -92,3 +122,6 @@ module.exports = function(app) {
   //   req.logout();
   //   res.redirect('/');
   // });
+
+  // swagger
+  // http://demo.trms.com/CarouselAPI/swagger/ui/index#/Authentications

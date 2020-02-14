@@ -82,7 +82,7 @@ var artist = async (req, res, next) => {
         phone_no: 'required|integer|min:1',
         description: 'required',
         status: 'required',
-        type: 'required',
+        type: 'required'
     });
     const matched = await v.check();
     if (!matched) {
@@ -102,6 +102,28 @@ var editProfile = async (req, res, next) => {
     let v = new Validator(req.body, {
         id: 'required',
         type: 'required'
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.status = 422;
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+};
+
+// MiddleWare validation for editProfilebyAdmin/update user
+var editProfilebyAdmin = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        name: 'required',
+        password: 'required',
+        email: 'required|email',
+        phone_no: 'required|integer|min:1',
+        description: 'required',
+        userName: 'required',
+        artistId: 'required'
     });
     const matched = await v.check();
     if (!matched) {
@@ -228,6 +250,150 @@ const userId = async (req, res, next) => {
 }
 // End :: validtion for wishlist
 
+
+const mediaId = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        mediaId: 'required',
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+
+// booking validation
+const booking = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        artistId: 'required',
+        place: 'required',
+        date: 'required',
+        time: 'required'        
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+
+const bookingId = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        bookingId: 'required'
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+
+
+const insertCheckValue = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        id: 'required',
+        checkValue: 'required'
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+
+const insertArtistLike = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        userId: 'required',
+        artistId: 'required',
+        like: 'required'
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+
+const userIdArtitstId = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        userId: 'required',
+        artistId: 'required'
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+
+
+const artistLikingAdminIncrement = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        artistId: 'required',
+        incrementValue: 'required'
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+
+const loginWithOtpInsert = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        phone_no: 'required|integer|min:1',
+        status: 'required',
+        type: 'required'
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.status = 422;
+        req.body = v.errors;
+        v.errors.success = "Validation error";
+        if (v.errors.phone_no)
+            v.errors.phone_no.message = "Phone number invalid"; // custom validate message for phone number
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+
+const email = async (req, res, next) => {
+    let v = new Validator(req.body, {
+        email: 'required|email',
+    });
+    const matched = await v.check();
+    if (!matched) {
+        req.status = 422;
+        req.body = v.errors;
+        v.errors.success = "Validation error";        
+        res.status(422).send([v.errors]);
+    } else {
+        next();
+    }
+}
+
 exports.signUp                      = signUp;
 exports.login                       = login;
 exports.forgetPassword              = forgetPassword;
@@ -241,3 +407,13 @@ exports.deleteProfile               = deleteProfile;
 exports.IdStatus                    = IdStatus;
 exports.userIdMediaId               = userIdMediaId;
 exports.userId                      = userId;
+exports.mediaId                     = mediaId;
+exports.booking = booking;
+exports.bookingId = bookingId;
+exports.editProfilebyAdmin = editProfilebyAdmin;
+exports.insertCheckValue = insertCheckValue;
+exports.insertArtistLike = insertArtistLike;
+exports.userIdArtitstId = userIdArtitstId;
+exports.artistLikingAdminIncrement = artistLikingAdminIncrement;
+exports.loginWithOtpInsert = loginWithOtpInsert;
+exports.email = email;

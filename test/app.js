@@ -2,11 +2,12 @@
 var app = require('./server');
 var http = require('http');
 
-var port = normalizePort(process.env.PORT || '5000');
+var port = normalizePort(process.env.PORT || '3000');
 // app.set('port', port);
 
 var server = http.createServer(app);
-server.listen();
+// use for random changing local host --- server.listen(5000, "127.0.0.1");
+server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
