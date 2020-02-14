@@ -4,13 +4,13 @@ module.exports = {
     secure: false, // true for 465, false for other ports
     debug: true,
     auth: {
-        user: 'info@shyammobile.com', //process.env.GMAIL_USER, // generated ethereal user
-        pass: 'Yash.gaurav1' //process.env.GMAIL_PASSWORD // generated ethereal password
+        user: 'info@example.com', //process.env.GMAIL_USER, // generated ethereal user
+        pass: '******' //process.env.GMAIL_PASSWORD // generated ethereal password
     },
     tls: {
         rejectUnauthorized: false
     },
-    from: '<info@shyammobile.com>', // sender address
-    to: 'shyamparivar@shyammobile.com',
-    baseUrl:'http://185.149.112.29:3000/'
+    from: '<info@example.com>', // sender address
+    to: 'example@example.com',
+    baseUrl:'http://185.149.112.50:3000/'
 };
